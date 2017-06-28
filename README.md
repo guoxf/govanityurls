@@ -2,7 +2,7 @@
 
 Go Vanity URLs is a simple app that allows you to set custom import paths for your Go packages. 
 
-Note: **This go vanity urls is forked from GoogleCloudPlatform/govanityurls. GoogleCloudPlatform/govanityurls only works on google app engine. go vanity urls here could work on normal VPS.**
+>Note: **This go vanity urls is forked from GoogleCloudPlatform/govanityurls. GoogleCloudPlatform/govanityurls only works on google app engine. go vanity urls here could work on normal VPS.**
 
 ## Quickstart
 
@@ -22,10 +22,36 @@ serve the [https://github.com/bigwhite/gowechat](https://github.com/bigwhite/gow
 /experiments:
   repo: https://github.com/bigwhite/experiments
 ```
-
 You can add as many rules as you wish.
 
-Before run the app, point your custom domain to the vps ip where govanityurl deployed.
+>Before run the app, point your custom domain to the vps ip where govanityurl deployed. 
+
+govanityurls listens on address "0.0.0.0:8080" as default. It is better that you use a reverse proxy to transfer the real go get requests because you may have other services under your domain. Below is a nginx config example:
+
+```
+// /etc/nginx/conf.d/default.conf
+server {
+        listen 80;
+        listen 443 ssl;
+        server_name tonybai.com;
+
+        ssl_certificate           /etc/nginx/cert.crt;
+        ssl_certificate_key       /etc/nginx/cert.key;
+        ssl on;
+
+        location / {
+                proxy_pass http://10.11.36.23:8080;
+                proxy_redirect off;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+        }
+}
+```
 
 Run the app:
 
