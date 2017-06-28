@@ -1,32 +1,18 @@
-// Copyright 2017 Google Inc. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-// Package main contains an App Engine that serves vanity URLs for git repos.
 package main
 
 import (
+	"flag"
 	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
-	"google.golang.org/appengine"
 	"gopkg.in/yaml.v2"
 )
+
+var host string
 
 var m map[string]struct {
 	Repo    string `yaml:"repo,omitempty"`
@@ -34,6 +20,8 @@ var m map[string]struct {
 }
 
 func init() {
+	flag.StringVar(&host, "host", "", "custom domain name, e.g. tonybai.com")
+
 	vanity, err := ioutil.ReadFile("./vanity.yaml")
 	if err != nil {
 		log.Fatal(err)
@@ -49,7 +37,6 @@ func init() {
 			e.Display = fmt.Sprintf("%v %v/tree/master{/dir} %v/blob/master{/dir}/{file}#L{line}", e.Repo, e.Repo, e.Repo)
 		}
 	}
-	http.HandleFunc("/", handle)
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {
@@ -60,7 +47,6 @@ func handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	host := appengine.DefaultVersionHostname(appengine.NewContext(r))
 	if err := vanityTmpl.Execute(w, struct {
 		Import  string
 		Repo    string
@@ -86,3 +72,22 @@ var vanityTmpl, _ = template.New("vanity").Parse(`<!DOCTYPE html>
 Nothing to see here; <a href="https://godoc.org/{{.Import}}">see the package on godoc</a>.
 </body>
 </html>`)
+
+func usage() {
+	fmt.Println("govanityurls is a service that allows you to set custom import paths for your go packages\n")
+	fmt.Println("Usage:")
+	fmt.Println("\t govanityurls -host [HOST_NAME]\n")
+	flag.PrintDefaults()
+}
+
+func main() {
+	flag.Parse()
+
+	if host == "" {
+		usage()
+		return
+	}
+
+	http.Handle("/", http.HandlerFunc(handle))
+	log.Fatalln(http.ListenAndServe("0.0.0.0:8080", nil))
+}
