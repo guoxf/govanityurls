@@ -1,8 +1,8 @@
-# Go Vanity URLs for normal vps
+# Go Vanity URLs for normal VPS(virtual private server)
 
 Go Vanity URLs is a simple app that allows you to set custom import paths for your Go packages. 
 
-Note: **this go vanity urls is forked from GoogleCloudPlatform/govanityurls. GoogleCloudPlatform/govanityurls only works on google app engine. go vanity urls here could work on normal vps**
+Note: **This go vanity urls is forked from GoogleCloudPlatform/govanityurls. GoogleCloudPlatform/govanityurls only works on google app engine. go vanity urls here could work on normal VPS.**
 
 ## Quickstart
 
