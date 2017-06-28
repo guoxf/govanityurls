@@ -1,42 +1,41 @@
-# Go Vanity URLs
+# Go Vanity URLs for normal vps
 
-Go Vanity URLs is a simple App Engine Go app that allows you
-to set custom import paths for your Go packages.
+Go Vanity URLs is a simple app that allows you to set custom import paths for your Go packages. 
+
+Note: **this go vanity urls is forked from GoogleCloudPlatform/govanityurls. GoogleCloudPlatform/govanityurls only works on google app engine. go vanity urls here could work on normal vps**
 
 ## Quickstart
 
-Install [gcloud](https://cloud.google.com/sdk/downloads) and install Go App Engine component:
+Install go vanity urls:
 
 ```
-$ gcloud components install app-engine-go
+$ go get github.com/bigwhite/govanityurls
 ```
 
-Setup a [custom domain](https://cloud.google.com/appengine/docs/standard/python/using-custom-domains-and-ssl) for your app.
-
-Get the application:
-```
-go get -u -d github.com/GoogleCloudPlatform/govanityurls
-cd $(go env GOPATH)/src/github.com/GoogleCloudPlatform/govanityurls
-```
-
-Edit `vanity.yaml` to add any number of git repos. E.g., `customdomain.com/portmidi` will
-serve the [https://github.com/rakyll/portmidi](https://github.com/rakyll/portmidi) repo.
+Edit `vanity.yaml` to add any number of git repos. E.g., `tonybai.com/gowechat` will
+serve the [https://github.com/bigwhite/gowechat](https://github.com/bigwhite/gowechat) repo.
 
 ```
-/portmidi:
-  repo: https://github.com/rakyll/portmidi
+/gowechat:
+  repo: https://github.com/bigwhite/gowechat
+
+/experiments:
+  repo: https://github.com/bigwhite/experiments
 ```
 
 You can add as many rules as you wish.
 
-Deploy the app:
+Before run the app, point your custom domain to the vps ip where govanityurl deployed.
+
+Run the app:
 
 ```
-$ gcloud app deploy
+$ cd $(go env GOPATH)/src/github.com/bigwhite/govanityurls
+$ govanityurls -host tonybai.com
 ```
 
 That's it! You can use `go get` to get the package from your custom domain.
 
 ```
-$ go get customdomain.com/portmidi
+$ go get tonybai.com/gowechat
 ```
