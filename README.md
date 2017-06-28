@@ -26,7 +26,7 @@ You can add as many rules as you wish.
 
 >Before run the app, point your custom domain to the vps ip where govanityurl deployed. 
 
-govanityurls listens on address "0.0.0.0:8080" as default. It is better that you use a reverse proxy to transfer the real go get requests because you may have other services under your domain. Below is a nginx config example:
+govanityurls listens on address "0.0.0.0:8080" as default. It is better to use a reverse proxy to transfer the real go get requests because you may have other services under your domain. Below is a nginx config example on ubuntu 16.04:
 
 ```
 // /etc/nginx/conf.d/default.conf
