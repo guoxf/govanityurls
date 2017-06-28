@@ -39,7 +39,7 @@ server {
         ssl_certificate_key       /etc/nginx/cert.key;
         ssl on;
 
-        location / {
+        location /gowechat {
                 proxy_pass http://10.11.36.23:8080;
                 proxy_redirect off;
                 proxy_set_header Host $host;
