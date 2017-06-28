@@ -19,7 +19,7 @@ serve the [https://github.com/bigwhite/gowechat](https://github.com/bigwhite/gow
 /gowechat:
   repo: https://github.com/bigwhite/gowechat
 
-/experiments:
+/x/experiments:
   repo: https://github.com/bigwhite/experiments
 ```
 You can add as many rules as you wish.
