@@ -1,3 +1,7 @@
+
+**Note: The origin GoogleCloudPlatform/govanityurls has alreay support running as a standalone server. so I advise you use the origin one. This repo will not be maintained later.
+
+
 # Go Vanity URLs for normal VPS(virtual private server)
 
 Go Vanity URLs is a simple app that allows you to set custom import paths for your Go packages. 
